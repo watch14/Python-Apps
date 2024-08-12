@@ -1,5 +1,6 @@
 print("Welcom to your Todo List!")
 tasks= []
+
 while True :
     user_action = input("Type add, show or exit: ")
     
@@ -11,6 +12,5 @@ while True :
             print(tasks)
         case 'exit':
             break
-            
 
 print(f"******\nYou quit your Todo List.\nThese are your Tasks: {tasks} \n******")
