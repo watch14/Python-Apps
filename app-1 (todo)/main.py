@@ -2,7 +2,7 @@ print("Welcom to your Todo List!")
 tasks= ['eat', 'sleep', 'repeat']
 
 while True :
-    user_action = input("Type add, show, edit or exit: ")
+    user_action = input("Type add, show, edit, complete or exit: ")
     user_action = user_action.strip().lower()
     
     match user_action:
