@@ -1,10 +1,16 @@
-user_prompt = "Enter another task or type 'x' to exit: "
-
+print("Welcom to your Todo List!")
 tasks= []
 while True :
-    task = input(user_prompt)
-    if task == "x":
-        break
-    tasks.append(task)
+    user_action = input("Type add, show or exit: ")
+    
+    match user_action:
+        case 'add':
+            todo = input("Enter a Task: ")
+            tasks.append(todo)
+        case 'show':
+            print(tasks)
+        case 'exit':
+            break
+            
 
-print(tasks)
+print(f"******\nYou quit your Todo List.\nThese are your Tasks: {tasks} \n******")
