@@ -14,7 +14,9 @@ while True :
     if 'add' in user_action:
         parts = user_action.split(" ")
         todo = " ".join(parts[1:]).title()
-
+        if todo is "":
+            todo = input("Add a Task: ").strip().title() + "\n"
+            
         todos.append(todo)
         
         with open("files/todos.txt", "w") as f:
@@ -29,7 +31,10 @@ while True :
     elif 'edit' in user_action:
         
         parts = user_action.split(" ")
-        nb = int(" ".join(parts[1:]))
+        if len(parts) > 1 and parts[1].isdigit():
+            nb = int(parts[1])
+        else:
+            nb = int(input("Add The Number Of The Task: ").strip())
             
         if 1 <= nb <= len(todos):
             edited = input(f"Edit {todo_list[nb - 1]} : ").strip().title() + '\n'
@@ -44,7 +49,10 @@ while True :
     elif 'complete' in user_action:
         
         parts = user_action.split(" ")
-        nb = int(" ".join(parts[1:]))
+        if len(parts) > 1 and parts[1].isdigit():
+            nb = int(parts[1])
+        else:
+            nb = int(input("Add The Number Of The Task: ").strip())
         
         if 1 <= nb <= len(todos):
             print(f"Task {todo_list[nb - 1]} is Complete Well Done!!!")

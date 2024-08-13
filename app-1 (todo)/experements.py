@@ -8,7 +8,7 @@ print("parts",parts)  # Output: Hello World!
 todo = " ".join(parts[1:])
 print("todo",todo)  # Output: Hello World!
 
-if todo is None:
+if todo is "":
     task = input("Add a Task: ").strip().title()
     print(task)
     
