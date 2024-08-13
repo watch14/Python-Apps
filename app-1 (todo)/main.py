@@ -24,7 +24,7 @@ while True :
             f.writelines(todos)
         
     # Show all task
-    elif user_action.startswith("show"):
+    elif user_action == "show":
         #print all tasks
         print("Your todos:")
         for index, item in enumerate(todo_list):
@@ -32,23 +32,27 @@ while True :
 
     # Edit task
     elif user_action.startswith("edit"):
-        
-        parts = user_action.split(" ")
-        if len(parts) > 1 and parts[1].isdigit():
-            nb = int(parts[1])
-        else:
-            nb = int(input("Add The Number Of The Task: ").strip())
-            
-        if 1 <= nb <= len(todos):
-            edited = input(f"Edit {todo_list[nb - 1]} : ").strip().title() + '\n'
-            todos[nb - 1] = edited
-            
-            #save/overwrite todos to the file
-            with open("files/todos.txt", "w") as f:
-                f.writelines(todos)
+        try:
+            parts = user_action.split(" ")
+            if len(parts) > 1 and parts[1].isdigit():
+                nb = int(parts[1])
+            else:
+                nb = int(input("Add the number of the task to Edit it: ").strip())
                 
-        else:
-            print(f"Out of range the number should be between 1 and {len(todos)}")
+            if 1 <= nb <= len(todos):
+                edited = input(f"Edit {todo_list[nb - 1]} : ").strip().title() + '\n'
+                todos[nb - 1] = edited
+                
+                #save/overwrite todos to the file
+                with open("files/todos.txt", "w") as f:
+                    f.writelines(todos)
+                    
+            else:
+                print(f"Out of range the number should be between 1 and {len(todos)}")
+                
+        except KeyboardInterrupt as e:
+            print(f"An error occurred: {e}")
+            
             
     # Complete task
     elif user_action.startswith("complete"):
@@ -57,7 +61,7 @@ while True :
         if len(parts) > 1 and parts[1].isdigit():
             nb = int(parts[1])
         else:
-            nb = int(input("Add The Number Of The Task: ").strip())
+            nb = int(input("Add the number of the task that u Completed: ").strip())
         
         if 1 <= nb <= len(todos):
             print(f"Task {todo_list[nb - 1]} is Complete Well Done!!!")
