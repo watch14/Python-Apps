@@ -20,3 +20,7 @@ def printToods(file):
     print("Your todos:")
     for index, item in enumerate(todos):
         print(f"{index + 1}. {item.strip("\n")}")
+        
+        
+if __name__ == "__main___":
+    pass
