@@ -1,0 +1,8 @@
+input_string = "add Hello World World World World World World !"
+# Splitting the string by spaces
+parts = input_string.split(" ")
+
+
+# Joining the list back into a string
+result = " ".join(parts[1:]).strip().title()
+print(result)  # Output: Hello World!
