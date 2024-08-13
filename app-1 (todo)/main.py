@@ -11,24 +11,27 @@ while True :
         
     todo_list = [item.strip('\n') for item in todos]
             
-    if 'add' in user_action:
+    # Add tasks
+    if user_action.startswith("add"):
         parts = user_action.split(" ")
         todo = " ".join(parts[1:]).title()
         if todo is "":
-            todo = input("Add a Task: ").strip().title() + "\n"
+            todo = input("Add a Task: ").strip().title()
             
-        todos.append(todo)
+        todos.append(todo + "\n")
         
         with open("files/todos.txt", "w") as f:
             f.writelines(todos)
         
-    elif 'show' in user_action:
-        #print all of the tasks
+    # Show all task
+    elif user_action.startswith("show"):
+        #print all tasks
         print("Your todos:")
         for index, item in enumerate(todo_list):
             print(f"{index + 1}. {item}")
 
-    elif 'edit' in user_action:
+    # Edit task
+    elif user_action.startswith("edit"):
         
         parts = user_action.split(" ")
         if len(parts) > 1 and parts[1].isdigit():
@@ -39,6 +42,7 @@ while True :
         if 1 <= nb <= len(todos):
             edited = input(f"Edit {todo_list[nb - 1]} : ").strip().title() + '\n'
             todos[nb - 1] = edited
+            
             #save/overwrite todos to the file
             with open("files/todos.txt", "w") as f:
                 f.writelines(todos)
@@ -46,7 +50,8 @@ while True :
         else:
             print(f"Out of range the number should be between 1 and {len(todos)}")
             
-    elif 'complete' in user_action:
+    # Complete task
+    elif user_action.startswith("complete"):
         
         parts = user_action.split(" ")
         if len(parts) > 1 and parts[1].isdigit():
@@ -64,7 +69,8 @@ while True :
         else:
             print(f"Out of range the number should be between 1 and {len(todos)}")
 
-    elif 'exit' in user_action:
+    # Exit
+    elif user_action.startswith("exit"):
         print()
         print("**********")
         print()
@@ -78,4 +84,4 @@ while True :
         break
     
     else:
-        print("Invalid action!")
+        print("Invalid Action!")
