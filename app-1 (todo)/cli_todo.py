@@ -19,7 +19,7 @@ while True :
             todo = input("Add a Task: ").strip().title()
             
 
-        todos.append(todo + ". " + currentTime() + "\n")
+        todos.append(todo + "\n")
         
         saveFile(filePath, todos)
             
