@@ -1,0 +1,1 @@
+apply_theme_to_titlebar(root)
