@@ -4,12 +4,12 @@ from functions import *
 print("-------------------------")
 print("Welcom to your Todo List!")
 print("-------------------------")
-
+filePath = "files/todos.txt"
 while True :
     user_action = input("Type add, show, edit, complete or exit: ")
     user_action = user_action.strip().lower()
     
-    todos = getTodos("files/todos.txt")
+    todos = getTodos(filePath)
             
     # Add tasks
     if user_action.startswith("add"):
@@ -21,14 +21,14 @@ while True :
 
         todos.append(todo + ". " + currentTime() + "\n")
         
-        saveFile("files/todos.txt", todos)
+        saveFile(filePath, todos)
             
 
         
     # Show all task
     elif user_action == "show":
         #print all tasks
-        printToods("files/todos.txt")
+        printToods(filePath)
 
     # Edit task
     elif user_action.startswith("edit"):
@@ -44,7 +44,7 @@ while True :
                 todos[nb - 1] = edited
                 
                 #save/overwrite todos to the file
-                saveFile("files/todos.txt", todos)
+                saveFile(filePath, todos)
                     
             else:
                 print(f"Out of range the number should be between 1 and {len(todos)}")
@@ -67,7 +67,7 @@ while True :
                 print(f"Task {todos[nb - 1].strip("\n")} is Complete Well Done!!!")
                 todos.pop(nb - 1)
                 #save/overwrite todos to the file
-                saveFile("files/todos.txt", todos)
+                saveFile(filePath, todos)
 
             else:
                 print(f"Out of range the number should be between 1 and {len(todos)}")
