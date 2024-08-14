@@ -1,4 +1,4 @@
-from  time import strftime
+from  time import strftime, sleep
 
 
 def getTodos(file):
@@ -33,8 +33,9 @@ def currentTime():
         - %Y : year
         - %H %M %S : hours, minutes, seconds
     """
-    curr = strftime("(%d %b %Y %H:%M:%S)")
-    return curr
+    curr = strftime("%d %b %Y %H:%M:%S")
+    # sleep(1)
+    return(curr)
         
 if __name__ == "__main___":
     pass
