@@ -21,46 +21,45 @@ window = sg.Window("To-Do List", layout, font=('Helvetica', 10))
 
 while True:
     event, values = window.read()
+    
+    todos = getTodos(filePath)
+    
     print("event:",event)
     print("values:",values)
 
     if event == "Add":
         # Handle the Add button click
-        todos = getTodos(filePath)
         todo_item = values['-TODO-'].strip().title() + "\n"
         todos.append(todo_item)
         
         saveFile(filePath, todos)
+        window['-TODOS-'].update(values=todos)
         
         
     elif event == "Edit":
-        todoToEdit = values["-TODOS-"]
-        # todoToEdit = todoToEdit[0].strip("\n")
+        todoToEdit = values["-TODOS-"][0]
         todoEdited= values['-TODO-'].strip().title() + "\n"
         
-        todos = getTodos(filePath)
-        for i, item in enumerate(todos):
-            if item in todoToEdit:
-                todos[i] = todoEdited
+        i = todos.index(todoToEdit)
+        todos[i] = todoEdited
         
-        print(todos)
         saveFile(filePath, todos)
+        window['-TODOS-'].update(values=todos)
         
         
     elif event == "Complete":
-        todoToEdit = values["-TODOS-"]
-        # todoToEdit = todoToEdit[0].strip("\n")
-        todoEdited= values['-TODO-'].strip().title() + "\n"
+        todoToEdit = values["-TODOS-"][0]
         
-        todos = getTodos(filePath)
-        for i, item in enumerate(todos):
-            if item in todoToEdit:
-                todos.pop(i)
+        i = todos.index(todoToEdit)
+        todos.pop(i)
         
-        print(todos)
         saveFile(filePath, todos)
+        
+        window['-TODOS-'].update(values=todos)
             
-    
+    elif event == "-TODOS-":
+        window['-TODO-'].update(value=values["-TODOS-"][0].strip())
+        
     elif event == sg.WIN_CLOSED:
         break
 
