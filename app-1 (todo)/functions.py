@@ -27,13 +27,13 @@ def printToods(file):
         
 def currentTime():
     """ return current time:
-        - %a : day
+        - %a : day of the week
         - %d : day of the month
         - %b : month
         - %Y : year
-        - %H %M : hours and minuts
+        - %H %M %S : hours, minutes, seconds
     """
-    curr = strftime("(%d %b %Y %H:%M)")
+    curr = strftime("(%d %b %Y %H:%M:%S)")
     return curr
         
 if __name__ == "__main___":
