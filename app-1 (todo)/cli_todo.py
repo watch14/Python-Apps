@@ -15,7 +15,7 @@ while True :
     if user_action.startswith("add"):
         parts = user_action.split(" ")
         todo = " ".join(parts[1:]).title()
-        if todo is "":
+        if todo == "":
             todo = input("Add a Task: ").strip().title()
             
 
