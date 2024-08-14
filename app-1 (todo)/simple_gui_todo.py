@@ -1,8 +1,15 @@
 import PySimpleGUI as sg
 from functions import *
 from functions_gui import *
+import os
 
-filePath = "files/todos.txt"
+# filePath = "files/todos.txt"
+filePath = "todos.txt"
+
+if not os.path.exists(filePath):
+    with open(filePath, 'w') as f:
+        pass
+
 fonts = ('Helvetica', 10)
 sg.theme("Reds")
 # Define the layout
