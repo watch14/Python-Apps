@@ -1,3 +1,6 @@
+from  time import strftime
+
+
 def getTodos(file):
     """ Return file content - todos - taks in a List """
     with open(file, "r") as f:
@@ -21,6 +24,17 @@ def printToods(file):
     for index, item in enumerate(todos):
         print(f"{index + 1}. {item.strip("\n")}")
         
+        
+def currentTime():
+    """ return current time:
+        - %a : day
+        - %d : day of the month
+        - %b : month
+        - %Y : year
+        - %H %M : hours and minuts
+    """
+    curr = strftime("(%d %b %Y %H:%M)")
+    return curr
         
 if __name__ == "__main___":
     pass

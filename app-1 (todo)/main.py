@@ -1,4 +1,6 @@
 from functions import *
+
+
 print("-------------------------")
 print("Welcom to your Todo List!")
 print("-------------------------")
@@ -16,7 +18,8 @@ while True :
         if todo is "":
             todo = input("Add a Task: ").strip().title()
             
-        todos.append(todo + "\n")
+
+        todos.append(todo + ". " + currentTime() + "\n")
         
         saveFile("files/todos.txt", todos)
             
