@@ -1,5 +1,4 @@
-from  time import strftime
+import sv_ttk
+import os
 
-
-curr = strftime("%a, %d %b %Y %H:%M")
-print("Current time 2:", curr) 
+print(os.path.join(os.path.dirname(sv_ttk.__file__), 'sv.tcl'))

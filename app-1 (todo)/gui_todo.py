@@ -4,11 +4,20 @@ You can install the required packages using pip:
 
     pip install sv_ttk pywinstyles darkdetect
 """
+import sv_ttk
+import os
 from functions import *
 from functions_gui import *
 import tkinter as tk
 from tkinter import ttk
-import sv_ttk
+
+
+
+filePath = "todos.txt"
+
+if not os.path.exists(filePath):
+    with open(filePath, 'w') as f:
+        pass
 
 
 # Function to exit the application
