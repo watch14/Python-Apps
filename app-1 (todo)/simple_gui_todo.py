@@ -32,12 +32,34 @@ while True:
         
         saveFile(filePath, todos)
         
-        print(event)
-    elif event == "-TODOS-":
-        ev = values["-TODOS-"]
-        print(ev)
-    
-    
+        
+    elif event == "Edit":
+        todoToEdit = values["-TODOS-"]
+        # todoToEdit = todoToEdit[0].strip("\n")
+        todoEdited= values['-TODO-'].strip().title() + "\n"
+        
+        todos = getTodos(filePath)
+        for i, item in enumerate(todos):
+            if item in todoToEdit:
+                todos[i] = todoEdited
+        
+        print(todos)
+        saveFile(filePath, todos)
+        
+        
+    elif event == "Complete":
+        todoToEdit = values["-TODOS-"]
+        # todoToEdit = todoToEdit[0].strip("\n")
+        todoEdited= values['-TODO-'].strip().title() + "\n"
+        
+        todos = getTodos(filePath)
+        for i, item in enumerate(todos):
+            if item in todoToEdit:
+                todos.pop(i)
+        
+        print(todos)
+        saveFile(filePath, todos)
+            
     
     elif event == sg.WIN_CLOSED:
         break
