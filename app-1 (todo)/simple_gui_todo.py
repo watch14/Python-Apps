@@ -1,13 +1,16 @@
 import PySimpleGUI as sg
+from functions import *
+from functions_gui import *
 
 # Define the layout
 layout = [
     [sg.Text("To-Do List")],
-    [sg.InputText("", key='-INPUT-'), sg.Button("Add")]
+    [sg.InputText(key='-INPUT-'), sg.Button("Add")]
 ]
 
+
 # Create the window
-window = sg.Window("To-Do List", layout)
+window = sg.Window("To-Do List", layout, font=('Helvetica', 10))
 
 while True:
     event, values = window.read()
