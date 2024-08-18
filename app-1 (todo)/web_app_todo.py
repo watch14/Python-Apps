@@ -12,27 +12,10 @@ archiveExcelFile = "files/archived_tasks.xlsx"
 today = datetime.date.today()
 today_str = today.strftime('%Y-%m-%d')
 
-# Function to initialize or load data from Excel
-def initialize_excel_files():
-    if not os.path.exists(todosDoneExcelFile):
-        with pd.ExcelWriter(todosDoneExcelFile, engine='openpyxl') as writer:
-            pd.DataFrame(columns=["To-Do Tasks"]).to_excel(writer, sheet_name='To-Do Tasks', index=False)
-            pd.DataFrame(columns=["Completed Tasks"]).to_excel(writer, sheet_name='Completed Tasks', index=False)
 
-    if not os.path.exists(archiveExcelFile):
-        with pd.ExcelWriter(archiveExcelFile, engine='openpyxl') as writer:
-            pd.DataFrame(columns=["Archived Tasks"]).to_excel(writer, sheet_name=today_str, index=False)
+initialize_excel_files(todosDoneExcelFile)
 
-initialize_excel_files()
-
-# Load existing tasks from Excel
-def load_excel_data():
-    with pd.ExcelFile(todosDoneExcelFile) as xls:
-        todos_df = pd.read_excel(xls, sheet_name='To-Do Tasks')
-        doneTodos_df = pd.read_excel(xls, sheet_name='Completed Tasks')
-    return todos_df['To-Do Tasks'].tolist(), doneTodos_df['Completed Tasks'].tolist()
-
-todos, doneTodos = load_excel_data()
+todos, doneTodos = load_excel_data(todosDoneExcelFile)
 
 # Function to save to-do lists and completed tasks to Excel
 def save_todos_done_to_excel():
@@ -42,6 +25,7 @@ def save_todos_done_to_excel():
     with pd.ExcelWriter(todosDoneExcelFile, mode='w', engine='openpyxl') as writer:
         df_todos.to_excel(writer, sheet_name='To-Do Tasks', index=False)
         df_doneTodos.to_excel(writer, sheet_name='Completed Tasks', index=False)
+
 
 # Function to save archived tasks to Excel
 def save_archived_to_excel():
