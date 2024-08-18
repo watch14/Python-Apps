@@ -44,14 +44,14 @@ def currentTime():
 ###### EXEL Functions
 
 # Function to initialize or load data from Excel
-def initialize_excel_files(file):
+def initialize_excel_files(file, archive):
     if not os.path.exists(file):
         with pd.ExcelWriter(file, engine='openpyxl') as writer:
             pd.DataFrame(columns=["To-Do Tasks"]).to_excel(writer, sheet_name='To-Do Tasks', index=False)
             pd.DataFrame(columns=["Completed Tasks"]).to_excel(writer, sheet_name='Completed Tasks', index=False)
 
-    if not os.path.exists(archiveExcelFile):
-        with pd.ExcelWriter(archiveExcelFile, engine='openpyxl') as writer:
+    if not os.path.exists(archive):
+        with pd.ExcelWriter(archive, engine='openpyxl') as writer:
             pd.DataFrame(columns=["Archived Tasks"]).to_excel(writer, sheet_name=today_str, index=False)
 
 

@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+from functions import initialize_excel_files, load_excel_data
 import datetime
 
 # File paths for the to-do lists, completed tasks, and archives
@@ -13,9 +14,10 @@ today = datetime.date.today()
 today_str = today.strftime('%Y-%m-%d')
 
 
-initialize_excel_files(todosDoneExcelFile)
+initialize_excel_files(todosDoneExcelFile, archiveExcelFile)
 
 todos, doneTodos = load_excel_data(todosDoneExcelFile)
+
 
 # Function to save to-do lists and completed tasks to Excel
 def save_todos_done_to_excel():
