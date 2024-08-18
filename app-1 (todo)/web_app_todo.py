@@ -28,7 +28,7 @@ st.text_input(label="Add Task:", placeholder="Add Task:",
 st.write("Task need to be done!")
 
 for item in todos:
-    st.checkbox(item)
+    st.checkbox(item, key=item)
     
 
 st.session_state
