@@ -1,5 +1,2 @@
 Eat
-Shit
-Sleep
-Repeat
-Add
+Eat
