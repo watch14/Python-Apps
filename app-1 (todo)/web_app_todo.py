@@ -5,19 +5,14 @@ from functions import initialize_excel_files, load_excel_data
 import datetime
 
 # File paths for the to-do lists, completed tasks, and archives
-
 todosDoneExcelFile = "files/todos_done_summary.xlsx"
 archiveExcelFile = "files/archived_tasks.xlsx"
 
-# Determine today’s date
-today = datetime.date.today()
-today_str = today.strftime('%Y-%m-%d')
-
-
+# Initialize files if necessary
 initialize_excel_files(todosDoneExcelFile, archiveExcelFile)
 
+# Load data
 todos, doneTodos = load_excel_data(todosDoneExcelFile)
-
 
 # Function to save to-do lists and completed tasks to Excel
 def save_todos_done_to_excel():
@@ -28,25 +23,17 @@ def save_todos_done_to_excel():
         df_todos.to_excel(writer, sheet_name='To-Do Tasks', index=False)
         df_doneTodos.to_excel(writer, sheet_name='Completed Tasks', index=False)
 
-
 # Function to save archived tasks to Excel
 def save_archived_to_excel():
-    if os.path.exists(archiveExcelFile):
-        with pd.ExcelFile(archiveExcelFile) as xls:
-            sheet_dict = {sheet_name: xls.parse(sheet_name) for sheet_name in xls.sheet_names}
-    else:
-        sheet_dict = {}
-
     df_archive = pd.DataFrame(doneTodos, columns=["Archived Tasks"])
-    sheet_dict[today_str] = df_archive
+    today_str = datetime.date.today().strftime('%Y-%m-%d')
 
-    with pd.ExcelWriter(archiveExcelFile, mode='w', engine='openpyxl') as writer:
-        for sheet_name, df in sheet_dict.items():
-            df.to_excel(writer, sheet_name=sheet_name, index=False)
+    with pd.ExcelWriter(archiveExcelFile, mode='a', engine='openpyxl', if_sheet_exists='overlay') as writer:
+        df_archive.to_excel(writer, sheet_name=today_str, index=False)
 
 # Function to handle checkbox changes
 def handle_checkbox_change(item, index):
-    if st.session_state.get(f"{item}_{index}"):
+    if st.session_state.get(f"{item}_{index}", False):
         doneTodos.append(item)
         todos.remove(item)
         save_todos_done_to_excel()
@@ -54,9 +41,9 @@ def handle_checkbox_change(item, index):
 
 # Function to add a new task
 def addTodo():
-    todo = st.session_state["newTodo"]
-    if todo.strip():
-        todos.append(todo.strip().title())
+    todo = st.session_state.get("newTodo", "").strip()
+    if todo:
+        todos.append(todo.title())
         save_todos_done_to_excel()
         st.session_state["newTodo"] = ""
 
@@ -67,9 +54,7 @@ st.write("""
          """)
 
 # Input for adding new tasks
-st.text_input(label="Add Task:", placeholder="Add Task:",
-              label_visibility="collapsed", on_change=addTodo,
-              key="newTodo")
+st.text_input(label="Add Task:", placeholder="Add Task:", key="newTodo", on_change=addTodo)
 
 # Display tasks to be done
 st.write("Tasks that need to be done:")
@@ -92,12 +77,11 @@ st.progress(completion_percentage)
 
 # Motivational message
 if completed_count > 0:
-    completion_ratio = completed_count / total_count
-    if completion_ratio > 0.75:
+    if completion_percentage > 0.75:
         st.write("### Fantastic job! You've completed a significant portion of your tasks. You're doing great!")
-    elif completion_ratio > 0.50:
+    elif completion_percentage > 0.50:
         st.write("### Well done! You've completed more than half of your tasks. Keep pushing forward!")
-    elif completion_ratio > 0.25:
+    elif completion_percentage > 0.25:
         st.write("### Good work! You've made solid progress. Keep working to reach your goal!")
     else:
         st.write("### Keep going! You've made a good start. Stay focused and continue making progress!")
