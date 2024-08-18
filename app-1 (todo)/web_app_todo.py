@@ -2,40 +2,77 @@ import streamlit as st
 import pandas as pd
 import os
 import datetime
-from functions import getTodos, saveFile
 
 # File paths for the to-do lists, completed tasks, and archives
-todosFile = "files/todos.txt"
-doneTodosFile = "files/done_todos.txt"
+
 todosDoneExcelFile = "files/todos_done_summary.xlsx"
 archiveExcelFile = "files/archived_tasks.xlsx"
-
-
 
 # Determine today’s date
 today = datetime.date.today()
 today_str = today.strftime('%Y-%m-%d')
 
-# Function to reset the done list
-def resetDailyDoneList():
-    if not os.path.exists(doneTodosFile) or not os.path.getsize(doneTodosFile):
-        with open(doneTodosFile, 'w') as f:
-            f.write("")
+# Function to initialize or load data from Excel
+def initialize_excel_files():
+    if not os.path.exists(todosDoneExcelFile):
+        with pd.ExcelWriter(todosDoneExcelFile, engine='openpyxl') as writer:
+            pd.DataFrame(columns=["To-Do Tasks"]).to_excel(writer, sheet_name='To-Do Tasks', index=False)
+            pd.DataFrame(columns=["Completed Tasks"]).to_excel(writer, sheet_name='Completed Tasks', index=False)
+
+    if not os.path.exists(archiveExcelFile):
+        with pd.ExcelWriter(archiveExcelFile, engine='openpyxl') as writer:
+            pd.DataFrame(columns=["Archived Tasks"]).to_excel(writer, sheet_name=today_str, index=False)
+
+initialize_excel_files()
+
+# Load existing tasks from Excel
+def load_excel_data():
+    with pd.ExcelFile(todosDoneExcelFile) as xls:
+        todos_df = pd.read_excel(xls, sheet_name='To-Do Tasks')
+        doneTodos_df = pd.read_excel(xls, sheet_name='Completed Tasks')
+    return todos_df['To-Do Tasks'].tolist(), doneTodos_df['Completed Tasks'].tolist()
+
+todos, doneTodos = load_excel_data()
+
+# Function to save to-do lists and completed tasks to Excel
+def save_todos_done_to_excel():
+    df_todos = pd.DataFrame(todos, columns=["To-Do Tasks"])
+    df_doneTodos = pd.DataFrame(doneTodos, columns=["Completed Tasks"])
+    
+    with pd.ExcelWriter(todosDoneExcelFile, mode='w', engine='openpyxl') as writer:
+        df_todos.to_excel(writer, sheet_name='To-Do Tasks', index=False)
+        df_doneTodos.to_excel(writer, sheet_name='Completed Tasks', index=False)
+
+# Function to save archived tasks to Excel
+def save_archived_to_excel():
+    if os.path.exists(archiveExcelFile):
+        with pd.ExcelFile(archiveExcelFile) as xls:
+            sheet_dict = {sheet_name: xls.parse(sheet_name) for sheet_name in xls.sheet_names}
+    else:
+        sheet_dict = {}
+
+    df_archive = pd.DataFrame(doneTodos, columns=["Archived Tasks"])
+    sheet_dict[today_str] = df_archive
+
+    with pd.ExcelWriter(archiveExcelFile, mode='w', engine='openpyxl') as writer:
+        for sheet_name, df in sheet_dict.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+# Function to handle checkbox changes
+def handle_checkbox_change(item, index):
+    if st.session_state.get(f"{item}_{index}"):
+        doneTodos.append(item)
+        todos.remove(item)
+        save_todos_done_to_excel()
+        save_archived_to_excel()
 
 # Function to add a new task
 def addTodo():
     todo = st.session_state["newTodo"]
     if todo.strip():
-        todos.append(todo.strip().title() + "\n")
-        saveFile(todosFile, todos)
+        todos.append(todo.strip().title())
+        save_todos_done_to_excel()
         st.session_state["newTodo"] = ""
-
-# Reset the done list for today
-resetDailyDoneList()
-
-# Load existing tasks
-todos = getTodos(todosFile)
-doneTodos = getTodos(doneTodosFile)
 
 # App header
 st.write("""
@@ -53,23 +90,10 @@ st.write("Tasks that need to be done:")
 
 # List the current tasks with checkboxes
 for i, item in enumerate(todos):
-    checkbox = st.checkbox(item, key=f"{item}_{i}")  # Unique key by adding the index
-    if checkbox:
-        # Move the task to the done list
-        doneTodos.append(todos[i])
-        saveFile(doneTodosFile, doneTodos)
-        
-        # Remove the task from the to-do list
-        todos.pop(i)
-        saveFile(todosFile, todos)
-        
-        # Clear the session state for the checkbox
-        del st.session_state[f"{item}_{i}"]
-        st.rerun()  # Rerun to refresh the task list
+    st.checkbox(item, key=f"{item}_{i}", on_change=handle_checkbox_change, args=(item, i))
 
 # Separator
 st.markdown("---")
-
 
 # Calculate counts
 completed_count = len(doneTodos)
@@ -94,50 +118,38 @@ if completed_count > 0:
 else:
     st.write("### Get started! Add some tasks and start working towards your goals!")
 
-# Archive completed tasks at the end of the day
+# Show archived tasks using a slider
 st.markdown("---")
-st.write(f"### Archived Tasks for {today_str}")
+st.write("### View Archived Tasks")
 
-
-# Save todos and doneTodos to Excel
-def save_todos_done_to_excel():
-    # Create DataFrames
-    df_todos = pd.DataFrame(todos, columns=["To-Do Tasks"])
-    df_doneTodos = pd.DataFrame(doneTodos, columns=["Completed Tasks"])
-    
-    # Write to Excel file
-    with pd.ExcelWriter(todosDoneExcelFile, mode='w', engine='openpyxl') as writer:
-        df_todos.to_excel(writer, sheet_name='To-Do Tasks', index=False)
-        df_doneTodos.to_excel(writer, sheet_name='Completed Tasks', index=False)
-
-# Call the function to save todos and doneTodos to Excel
-save_todos_done_to_excel()
-
-# Save archived tasks to Excel
-def save_archived_to_excel():
-    # Read existing Excel file if it exists
+def load_archive_dates():
     if os.path.exists(archiveExcelFile):
         with pd.ExcelFile(archiveExcelFile) as xls:
-            # Read existing sheets into a dictionary
-            sheet_dict = {sheet_name: xls.parse(sheet_name) for sheet_name in xls.sheet_names}
-    else:
-        sheet_dict = {}
+            return [datetime.datetime.strptime(sheet_name, '%Y-%m-%d').date() for sheet_name in xls.sheet_names]
+    return []
 
-    # Create DataFrame for today's archived tasks
-    df_archive = pd.DataFrame(doneTodos, columns=["Archived Tasks"])
+archive_dates = load_archive_dates()
+
+if len(archive_dates) > 1:
+    min_date = min(archive_dates)
+    max_date = max(archive_dates)
     
-    # Add today's archived tasks to the dictionary
-    sheet_dict[f'Archived_{today_str}'] = df_archive
+    selected_date = st.slider(
+        "Select Date for Archived Tasks:",
+        min_value=min_date,
+        max_value=max_date,
+        value=max_date,
+        format="YYYY-MM-DD"
+    )
 
-    # Write all sheets back to the Excel file
-    with pd.ExcelWriter(archiveExcelFile, mode='w', engine='openpyxl') as writer:
-        for sheet_name, df in sheet_dict.items():
-            df.to_excel(writer, sheet_name=sheet_name, index=False)
-
-# Call the function to save archived tasks to Excel
-save_archived_to_excel()
-
-# Using an expander to keep the page compact
-with st.expander(f"Done tasks, well done! ({completed_count})"):
-    for i, item in enumerate(doneTodos):
-        st.checkbox(item, value=True, disabled=True, key=f"done_{item}_{i}")
+    selected_date_str = selected_date.strftime('%Y-%m-%d')
+    with pd.ExcelFile(archiveExcelFile) as xls:
+        if selected_date_str in xls.sheet_names:
+            df_archive = pd.read_excel(xls, sheet_name=selected_date_str)
+            st.write(f"Archived Tasks for {selected_date_str}:")
+            for task in df_archive['Archived Tasks']:
+                st.write(f"- {task}")
+        else:
+            st.write(f"No archived tasks found for {selected_date_str}.")
+else:
+    st.write("Not enough data to show the slider. Only one date available.")
