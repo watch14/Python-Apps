@@ -1,7 +1,6 @@
 import streamlit as st
 from email.message import EmailMessage
-from send_email import sendEmail  # Ensure this imports your own sendEmail function
-
+from send_email import sendEmail 
 st.set_page_config(page_title="Contact", page_icon=":envelope:", layout="centered")
 
 
@@ -29,7 +28,7 @@ with st.form(key='my_form'):
             mail.set_content(message_body)
             mail['Subject'] = 'Email From Portfolio'
             mail['From'] = userEmail
-            mail['To'] = 'maamounchebbi@gmail.com'  # Replace with your recipient email
+            mail['To'] = 'maamounchebbi@gmail.com'
 
             # Add the file as an attachment to the email
             if file is not None:
