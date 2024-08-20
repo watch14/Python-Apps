@@ -2,11 +2,14 @@ import streamlit as st
 from email.message import EmailMessage
 from send_email import sendEmail  # Ensure this imports your own sendEmail function
 
-st.set_page_config(page_title="Contact", page_icon=":envelope:", layout="wide")
+st.set_page_config(page_title="Contact", page_icon=":envelope:", layout="centered")
 
-st.markdown("[Github](https://github.com/watch14) 🔍")
-st.markdown("[Linkedin](https://www.linkedin.com/in/maamoun-chebbi-a791b3159/) :briefcase:")
 
+st.write("## Contact Me")
+st.write("#### Find Me Online:")
+st.markdown("[Github](https://github.com/watch14) | [Linkedin](https://www.linkedin.com/in/maamoun-chebbi-a791b3159/) ")
+
+st.write("#### Send Me an Email:")
 with st.form(key='my_form'):
     userEmail = st.text_input("Email")
     message_body = st.text_area("Message")
