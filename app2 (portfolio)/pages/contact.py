@@ -9,7 +9,10 @@ st.write("## Contact Me")
 st.write("#### Find Me Online:")
 st.markdown("[Github](https://github.com/watch14) | [Linkedin](https://www.linkedin.com/in/maamoun-chebbi-a791b3159/) ")
 
+
+# Email form
 st.write("#### Send Me an Email:")
+
 with st.form(key='my_form'):
     userEmail = st.text_input("Email")
     message_body = st.text_area("Message")
