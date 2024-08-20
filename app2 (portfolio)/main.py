@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 st.set_page_config(page_title="Maamoun Chebbi", page_icon=":wave:", layout="wide")
 
@@ -36,5 +37,34 @@ with col1:
     
 with col2:
     st.image("assets/images/photo.png")
+    
 
+df = pd.read_csv("assets/data.csv", sep=";")
+
+# Assuming 'df' is your DataFrame
+data = df.values
+col1, empty, col2 = st.columns([1.5, 0.5, 1.5])
+
+# Split the data into two columns
+for i in range(0, len(data), 2):
+
+    # First column
+    with col1:
+        if i < len(data):
+            st.title(data[i][0])
+            st.image(data[i][3], width=500)
+            st.write(data[i][1])
+            st.markdown(f"[Visit Project Git Repo]({data[i][2]})")
+            st.image(data[i][4])
+
+    # Second column
+    with col2:
+        if i + 1 < len(data):
+            st.title(data[i + 1][0])
+            st.image(data[i + 1][3], width=500)
+            st.write(data[i + 1][1])
+            st.markdown(f"[Visit Project Git Repo]({data[i][2]})")
+            st.image(data[i + 1][4])
+            
+            
 st.title("My Projects")

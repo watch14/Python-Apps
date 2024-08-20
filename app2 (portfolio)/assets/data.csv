@@ -1,4 +1,4 @@
-title;description;url;image
-"BuyMe;A specialized e-commerce platform for gamers and tech enthusiasts, offering a seamless shopping experience.;https://github.com/watch14/BuyMe-Ecommerce-App;1.png"
-"FeedMe;A meal planner web app that helps users discover recipes based on available ingredients, with features like a random recipe generator and recipes by country.;https://github.com/watch14/FeedME-0x1_Project;3.png"
-Todo App;A distraction-free web app to help you focus on creating and completing tasks.;https://pythonhow.com;3.png
+title;description;url;image;demo
+BuyMe Ecommerce App;BuyMe is an e-commerce platform dedicated to gamers and tech enthusiasts. Our website specializes in offering a wide range of gaming materials including keyboards mice monitors and PCs. Designed with a user-friendly interface BuyMe aims to provide a seamless shopping experience for all gaming needs.;https://github.com/watch14/BuyMe-Ecommerce-App;assets/images/1.png;assets/images/home1.png
+FeedME Meal Planer App;Welcome to FeedME a web application designed to help users plan their meals based on the ingredients they have on hand. With FeedME users can easily discover recipes that match their available ingredients explore random recipes and find recipes from various countries.;https://github.com/watch14/FeedME-0x1_Project;assets/images/2.png;assets/images/home2.png
+Todo App;A distraction-free web app to help you focus on creating and completing tasks.;https://github.com/watch14;assets/images/3.png;assets/images/home3.png
