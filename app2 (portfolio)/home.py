@@ -34,6 +34,9 @@ with col1:
     so feel free to reach out!    
     """
     st.write(content)
+    st.markdown(f"[Github]({"https://github.com/watch14"})")
+
+
     
 with col2:
     st.image("assets/images/photo.png")
@@ -52,19 +55,24 @@ for i in range(0, len(data), 2):
     with col1:
         if i < len(data):
             st.title(data[i][0])
-            st.image(data[i][3], width=500)
+            st.image(data[i][3])
             st.write(data[i][1])
             st.markdown(f"[Visit Project Git Repo]({data[i][2]})")
             st.image(data[i][4])
+            
+            st.write("---")
 
     # Second column
     with col2:
         if i + 1 < len(data):
             st.title(data[i + 1][0])
-            st.image(data[i + 1][3], width=500)
+            st.image(data[i + 1][3])
             st.write(data[i + 1][1])
             st.markdown(f"[Visit Project Git Repo]({data[i][2]})")
             st.image(data[i + 1][4])
+            
+            st.write("---")
+
             
             
 st.title("My Projects")
