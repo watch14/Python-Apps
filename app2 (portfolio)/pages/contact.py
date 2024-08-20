@@ -40,7 +40,7 @@ with st.form(key='my_form'):
             # Send the email
             success = sendEmail(mail)
             if success:
-                st.success("Email sent successfully ✅")
+                st.success("Email sent successfully✅")
                 st.balloons()
             else:
                 st.error("Email not sent. Please check your SMTP configuration and credentials.")
