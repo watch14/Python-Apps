@@ -1,14 +1,13 @@
 import streamlit as st
 
-
 st.set_page_config(page_title="Maamoun Chebbi", page_icon=":wave:", layout="wide")
 
-col1, col2 = st.columns(2)
+# Adjust the column ratio to give more space to the text
+col1, col2 = st.columns([2, 1])
+
+
 
 with col1:
-    st.image("assets/images/photo.png")
-    
-with col2:
     st.title("Hi, I am Maamoun Chebbi")
     content = """ 
     I am Maamoun Chebbi, a passionate and dedicated Junior Software Engineer
@@ -34,5 +33,8 @@ with col2:
     so feel free to reach out!    
     """
     st.write(content)
+    
+with col2:
+    st.image("assets/images/photo.png")
 
-st.title("My Portfolio")
+st.title("My Projects")
