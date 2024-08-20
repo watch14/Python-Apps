@@ -1,0 +1,5 @@
+import os
+
+password = os.environ.get("MC_EMAIL_PASSWORD")
+
+print(password)
